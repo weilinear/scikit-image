@@ -3,7 +3,7 @@ from scipy import sqrt, pi, arctan2, cos, sin
 from scipy.ndimage import uniform_filter
 
 
-def hog(image, orientations=9, pixels_per_cell=(8, 8),
+def _hog_single_channel(image, orientations=9, pixels_per_cell=(8, 8),
         cells_per_block=(3, 3), visualise=False, normalise=False):
     """Extract Histogram of Oriented Gradients (HOG) for a given image.
 
@@ -47,7 +47,7 @@ def hog(image, orientations=9, pixels_per_cell=(8, 8),
       Vision and Pattern Recognition 2005 San Diego, CA, USA
 
     """
-    image = np.atleast_2d(image)
+
 
     """
     The first stage applies an optional global image normalisation
@@ -59,11 +59,6 @@ def hog(image, orientations=9, pixels_per_cell=(8, 8),
     shadowing and illumination variations.
     """
 
-    if image.ndim > 2:
-        raise ValueError("Currently only supports grey-level images")
-
-    if normalise:
-        image = sqrt(image)
 
     """
     The second stage computes first order image gradients. These capture
@@ -182,3 +177,20 @@ def hog(image, orientations=9, pixels_per_cell=(8, 8),
         return normalised_blocks.ravel(), hog_image
     else:
         return normalised_blocks.ravel()
+
+def hog(image, orientations=9, pixels_per_cell=(8, 8),color_image_opt='togray',
+        cells_per_block=(3, 3), visualise=False, normalise=False):
+    image = np.atleast_2d(image)
+    
+    if image.ndim > 2:
+        # gamma correction of the image
+        if color_image_opt == 'togray':
+            return _hog_single_channel(image, orientations=orientations,
+                                       pixels_per_cell=pixels_per_cell,
+                                       cells_per_block=cells_per_block,
+                                       visualise=visualise)
+        elif color_image_opt == 'maximum':
+        for i in range(image.ndim):
+    else:
+        if normalise:
+            image = sqrt(image)
