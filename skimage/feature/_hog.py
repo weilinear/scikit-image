@@ -178,7 +178,7 @@ def _hog_single_channel(image, orientations=9, pixels_per_cell=(8, 8),
     else:
         return normalised_blocks.ravel()
 
-def hog(image, orientations=9, pixels_per_cell=(8, 8),color_image_opt='togray',
+def hog(image, orientations=9, pixels_per_cell=(8, 8),color_image_opt='maximum_gradient',
         cells_per_block=(3, 3), visualise=False, normalise=False):
     image = np.atleast_2d(image)
     
@@ -189,7 +189,8 @@ def hog(image, orientations=9, pixels_per_cell=(8, 8),color_image_opt='togray',
                                        pixels_per_cell=pixels_per_cell,
                                        cells_per_block=cells_per_block,
                                        visualise=visualise)
-        elif color_image_opt == 'maximum':
+        elif color_image_opt == 'maximum_gradient':
+            
         for i in range(image.ndim):
     else:
         if normalise:
